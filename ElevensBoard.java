@@ -231,15 +231,21 @@ public class ElevensBoard
 	 * @return true if the selected cards form a valid group for removal;
 	 *         false otherwise.
 	 */
-	public boolean isLegal(List<Integer> selectedCards) 
-   {
-		/* *** TO BE IMPLEMENTED IN LAB16 *** */
+    public boolean isLegal(List<Integer> selectedCards) {
+      if (selectedCards.size() == 2) {
+         return containsPairSum11(selectedCards);
+      } 
       
+      else if (selectedCards.size() == 3) {
+         return containsJQK(selectedCards);
+      }
       
-      return true;
-	}
+      else {
+         return false;
+      }
+ }
 
-	/**
+/**
 	 * Determine if there are any legal plays left on the board.
 	 * In Elevens, there is a legal play if the board contains
 	 * (1) a pair of non-face cards whose values add to 11, or (2) a group
@@ -247,15 +253,13 @@ public class ElevensBoard
 	 * @return true if there is a legal play left on the board;
 	 *         false otherwise.
 	 */
-	public boolean anotherPlayIsPossible() 
-   {
-		/* *** TO BE IMPLEMENTED IN LAB16 *** */
-      
-      
-      return true;
-	}
-   
-   /**
+    public boolean anotherPlayIsPossible() {
+       List<Integer> cIndexes = cardIndexes();
+       boolean returner = containsPairSum11(cIndexes) || containsJQK(cIndexes);
+       return returner;         
+   }
+
+ /**
 	 * Check for an 11-pair in the selected cards.
 	 * @param selectedCards selects a subset of this board.  It is list
 	 *                      of indexes into this board that are searched
@@ -263,15 +267,20 @@ public class ElevensBoard
 	 * @return true if the board entries in selectedCards
 	 *              contain an 11-pair; false otherwise.
 	 */
-	private boolean containsPairSum11(List<Integer> selectedCards) 
-   {
-		/* *** TO BE IMPLEMENTED IN LAB16 *** */
-      
-      
-      return true;
-	}
+   private boolean containsPairSum11(List<Integer> selectedCards) {
+      for (int i = 0; i < selectedCards.size(); i++) {
+         int card1 = selectedCards.get(i).intValue();
+         for (int k = i + 1; k < selectedCards.size(); k++) 
+         {
+            int card2 = selectedCards.get(k).intValue();
+            if (cardAt(card1).pointValue() + cardAt(card2).pointValue() == 11)  //check 11        
+               return true;         
+         }
+      }
+      return false;
+   }
 
-	/**
+ /**
 	 * Check for a JQK in the selected cards.
 	 * @param selectedCards selects a subset of this board.  It is list
 	 *                      of indexes into this board that are searched
@@ -279,12 +288,27 @@ public class ElevensBoard
 	 * @return true if the board entries in selectedCards
 	 *              include a jack, a queen, and a king; false otherwise.
 	 */
-	private boolean containsJQK(List<Integer> selectedCards) 
-   {
-		/* *** TO BE IMPLEMENTED IN LAB16 *** */
+    private boolean containsJQK(List<Integer> selectedCards) {
+      boolean hasJack = false;
+      boolean hasQueen = false;
+      boolean hasKing = false;
+  
+      for (Integer kObj : selectedCards) 
+      {
+         int k = kObj.intValue();
+         if (cardAt(k).rank().equals("jack"))
+            foundJack = true;
+         else if (cardAt(k).rank().equals("queen"))
+            foundQueen = true;
+         else if (cardAt(k).rank().equals("king"))
+            foundKing = true;
+   
+      }
       
-      
-      return true;
-	}
+      if(foundJack && foundQueen && foundKing)
+         return true;
+      else
+         return false;
+    }
    
 }
