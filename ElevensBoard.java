@@ -232,18 +232,13 @@ public class ElevensBoard
 	 *         false otherwise.
 	 */
     public boolean isLegal(List<Integer> selectedCards) {
-      if (selectedCards.size() == 2) {
+      if (selectedCards.size() == 2)
          return containsPairSum11(selectedCards);
-      } 
-      
-      else if (selectedCards.size() == 3) {
+      else if (selectedCards.size() == 3) //joker/queen/king combo wombo
          return containsJQK(selectedCards);
-      }
-      
-      else {
-         return false;
-      }
- }
+      else
+         return false;      
+   }
 
 /**
 	 * Determine if there are any legal plays left on the board.
@@ -254,8 +249,8 @@ public class ElevensBoard
 	 *         false otherwise.
 	 */
     public boolean anotherPlayIsPossible() {
-       List<Integer> cIndexes = cardIndexes();
-       boolean returner = containsPairSum11(cIndexes) || containsJQK(cIndexes);
+       List<Integer> temp = cardIndexes();
+       boolean returner = containsPairSum11(temp) || containsJQK(temp);
        return returner;         
    }
 
@@ -273,6 +268,7 @@ public class ElevensBoard
          for (int k = i + 1; k < selectedCards.size(); k++) 
          {
             int card2 = selectedCards.get(k).intValue();
+            System.out.println(card2);
             if (cardAt(card1).pointValue() + cardAt(card2).pointValue() == 11)  //check 11        
                return true;         
          }
